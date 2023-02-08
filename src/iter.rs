@@ -1,4 +1,4 @@
-use crate::types::Annotation;
+use crate::annotation::Annotation;
 use std::{
     fs::File,
     io,
