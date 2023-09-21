@@ -1,14 +1,15 @@
-use kitti_dataset::{Annotation, BoundingBox, Location, Size};
+use kitti_dataset::{Annotation, BoundingBox, Extents, Location, Occlusion};
 use measurements::{Angle, Length};
 
 #[test]
-fn kitti_annotation_parsing_test() {
-    let anns1: Vec<Annotation> = kitti_dataset::vec::from_path("tests/annotation.txt").unwrap();
+fn parse_annotation() {
+    let anns1: Vec<Annotation> =
+        kitti_dataset::annotation::vec_from_path("tests/annotation.txt").unwrap();
     let expect = vec![
         Annotation {
             class: "car".into(),
             truncation: 0.0,
-            occlusion: kitti_dataset::Occlusion::FullyVisible,
+            occlusion: Occlusion::FullyVisible,
             alpha: -1.58,
             bbox: BoundingBox {
                 xmin: 587.01,
@@ -16,7 +17,7 @@ fn kitti_annotation_parsing_test() {
                 xmax: 614.12,
                 ymax: 200.12,
             },
-            size: Size {
+            extents: Extents {
                 height: Length::from_meters(1.65),
                 width: Length::from_meters(1.67),
                 length: Length::from_meters(3.64),
@@ -31,7 +32,7 @@ fn kitti_annotation_parsing_test() {
         Annotation {
             class: "cyclist".into(),
             truncation: 0.0,
-            occlusion: kitti_dataset::Occlusion::FullyVisible,
+            occlusion: Occlusion::FullyVisible,
             alpha: -2.46,
             bbox: BoundingBox {
                 xmin: 665.45,
@@ -39,7 +40,7 @@ fn kitti_annotation_parsing_test() {
                 xmax: 717.93,
                 ymax: 217.99,
             },
-            size: Size {
+            extents: Extents {
                 height: Length::from_meters(1.72),
                 width: Length::from_meters(0.47),
                 length: Length::from_meters(1.65),
@@ -62,7 +63,7 @@ fn kitti_annotation_parsing_test() {
                 xmax: 433.17,
                 ymax: 224.03,
             },
-            size: Size {
+            extents: Extents {
                 height: Length::from_meters(1.60),
                 width: Length::from_meters(0.38),
                 length: Length::from_meters(0.30),
@@ -77,7 +78,7 @@ fn kitti_annotation_parsing_test() {
     ];
     assert_eq!(anns1, expect);
 
-    let text = kitti_dataset::write::to_string(&anns1).unwrap();
-    let anns2 = kitti_dataset::vec::from_str(&text).unwrap();
+    let text = kitti_dataset::annotation::write_to_string(&anns1).unwrap();
+    let anns2 = kitti_dataset::annotation::vec_from_str(&text).unwrap();
     assert_eq!(anns1, anns2);
 }

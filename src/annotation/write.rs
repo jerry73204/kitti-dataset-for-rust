@@ -6,7 +6,7 @@ use std::{
     path::Path,
 };
 
-pub fn to_writer<W, I, A>(writer: W, annotations: I) -> Result<(), io::Error>
+pub fn writer_to_writer<W, I, A>(writer: W, annotations: I) -> Result<(), io::Error>
 where
     I: IntoIterator<Item = A>,
     W: Write,
@@ -26,22 +26,22 @@ where
     Ok(())
 }
 
-pub fn to_path<P, I, A>(path: P, annotations: I) -> Result<(), io::Error>
+pub fn write_to_path<P, I, A>(path: P, annotations: I) -> Result<(), io::Error>
 where
     I: IntoIterator<Item = A>,
     P: AsRef<Path>,
     A: Borrow<Annotation>,
 {
     let writer = BufWriter::new(File::create(path)?);
-    to_writer(writer, annotations)
+    writer_to_writer(writer, annotations)
 }
 
-pub fn to_string<I, A>(annotations: I) -> Result<String, io::Error>
+pub fn write_to_string<I, A>(annotations: I) -> Result<String, io::Error>
 where
     I: IntoIterator<Item = A>,
     A: Borrow<Annotation>,
 {
     let mut buf = vec![];
-    to_writer(&mut buf, annotations)?;
+    writer_to_writer(&mut buf, annotations)?;
     Ok(String::from_utf8(buf).unwrap())
 }

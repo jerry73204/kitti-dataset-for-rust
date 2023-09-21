@@ -1,12 +1,9 @@
 pub mod annotation;
 pub mod calibration;
 pub mod error;
-pub mod iter;
-pub mod vec;
-pub mod write;
 
-pub use annotation::*;
 pub use calibration::*;
+pub use annotation::{Annotation, BoundingBox, Extents, Location, Occlusion};
 pub use error::Error;
 
 pub mod prelude {
