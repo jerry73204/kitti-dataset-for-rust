@@ -1,12 +1,28 @@
+use crate::serde::{occlusion, truncation};
 use measurements::{Angle, Length};
+use num_derive::FromPrimitive;
 use serde::{Deserialize, Serialize};
-use serde_repr::{Deserialize_repr, Serialize_repr};
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(from = "SerializedLabel", into = "SerializedLabel")]
+pub struct Label {
+    pub class: Class,
+    pub truncation: Option<f64>,
+    pub occlusion: Option<Occlusion>,
+    pub alpha: Angle,
+    pub bbox: BoundingBox,
+    pub extents: Extents,
+    pub location: Location,
+    pub rotation_y: Angle,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct SerializedLabel {
     pub class: Class,
-    pub truncation: f64,
-    pub occlusion: Occlusion,
+    #[serde(with = "truncation")]
+    pub truncation: Option<f64>,
+    #[serde(with = "occlusion")]
+    pub occlusion: Option<Occlusion>,
     pub alpha: f64,
     pub xmin: f64,
     pub ymin: f64,
@@ -111,20 +127,7 @@ impl From<Label> for SerializedLabel {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(from = "SerializedLabel", into = "SerializedLabel")]
-pub struct Label {
-    pub class: Class,
-    pub truncation: f64,
-    pub occlusion: Occlusion,
-    pub alpha: Angle,
-    pub bbox: BoundingBox,
-    pub extents: Extents,
-    pub location: Location,
-    pub rotation_y: Angle,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize_repr, Deserialize_repr)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, FromPrimitive)]
 #[repr(u8)]
 pub enum Occlusion {
     FullyVisible = 0,

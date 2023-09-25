@@ -1,6 +1,5 @@
 mod iter;
 mod types;
-mod utils;
 mod vec;
 mod write;
 

@@ -8,7 +8,10 @@ use std::{
 };
 
 pub use crate::object::{BoundingBox, Class, Extents, Location, Occlusion};
-use crate::Error;
+use crate::{
+    serde::{occlusion, truncation},
+    Error,
+};
 
 pub type LabelFromReaderIter<R> = csv::DeserializeRecordsIntoIter<R, Label>;
 pub type LabelFromPathIter = LabelFromReaderIter<BufReader<File>>;
@@ -18,10 +21,10 @@ pub type LabelFromStrIter<'a> = LabelFromReaderIter<Cursor<&'a str>>;
 #[serde(from = "SerializedLabel", into = "SerializedLabel")]
 pub struct Label {
     pub frame: u32,
-    pub track_id: u32,
+    pub track_id: Option<u32>,
     pub class: Class,
-    pub truncation: f64,
-    pub occlusion: Occlusion,
+    pub truncation: Option<f64>,
+    pub occlusion: Option<Occlusion>,
     pub alpha: Angle,
     pub bbox: BoundingBox,
     pub extents: Extents,
@@ -32,10 +35,12 @@ pub struct Label {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct SerializedLabel {
     pub frame: u32,
-    pub track_id: u32,
+    pub track_id: i32,
     pub class: Class,
-    pub truncation: f64,
-    pub occlusion: Occlusion,
+    #[serde(with = "truncation")]
+    pub truncation: Option<f64>,
+    #[serde(with = "occlusion")]
+    pub occlusion: Option<Occlusion>,
     pub alpha: f64,
     pub xmin: f64,
     pub ymin: f64,
@@ -74,7 +79,11 @@ impl From<SerializedLabel> for Label {
 
         Self {
             frame,
-            track_id,
+            track_id: if track_id >= 0 {
+                Some(track_id as u32)
+            } else {
+                None
+            },
             class,
             truncation,
             occlusion,
@@ -128,7 +137,10 @@ impl From<Label> for SerializedLabel {
 
         SerializedLabel {
             frame,
-            track_id,
+            track_id: match track_id {
+                Some(track_id) => track_id as i32,
+                None => -1,
+            },
             class,
             truncation,
             occlusion,

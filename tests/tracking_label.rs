@@ -1,6 +1,6 @@
-use kitti_dataset::tracking::{BoundingBox, Class, Extents, Label, Location, Occlusion};
+use kitti_dataset::tracking::Label;
 
 #[test]
 fn parse_tracking_label() {
-    let label1: Vec<Label> = Label::vec_from_path("tests/tracking_label.txt").unwrap();
+    let _: Vec<Label> = Label::vec_from_path("tests/tracking_label.txt").unwrap();
 }

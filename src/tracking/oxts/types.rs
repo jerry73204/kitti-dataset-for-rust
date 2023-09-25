@@ -1,4 +1,4 @@
-use super::utils::{serde_mode, serde_u8_as_f64};
+use crate::serde::{mode, u8_as_f64};
 use measurements::{Acceleration, Angle, AngularVelocity, Length, Speed};
 use serde::{Deserialize, Serialize};
 
@@ -80,23 +80,23 @@ pub struct SerializedOxts {
     pub velacc: f64,
 
     /// navigation status
-    #[serde(with = "serde_u8_as_f64")]
+    #[serde(with = "u8_as_f64")]
     pub navstat: u8,
 
     /// number of satellites tracked by primary GPS receiver
-    #[serde(with = "serde_u8_as_f64")]
+    #[serde(with = "u8_as_f64")]
     pub numsats: u8,
 
     /// position mode of primary GPS receiver
-    #[serde(with = "serde_mode")]
+    #[serde(with = "mode")]
     pub posmode: Option<u8>,
 
     /// velocity mode of primary GPS receiver
-    #[serde(with = "serde_mode")]
+    #[serde(with = "mode")]
     pub velmode: Option<u8>,
 
     /// orientation mode of primary GPS receiver
-    #[serde(with = "serde_mode")]
+    #[serde(with = "mode")]
     pub orimode: Option<u8>,
 }
 

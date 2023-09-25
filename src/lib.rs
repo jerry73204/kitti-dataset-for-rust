@@ -40,6 +40,7 @@ pub mod error;
 pub mod object;
 pub mod odometry;
 pub mod point_cloud;
+pub(crate) mod serde;
 pub mod tracking;
 
 pub use common::{ProjectionMatrix, Transform2D};
