@@ -1,10 +1,8 @@
-use kitti_dataset::{
-    object::ObjectCalibration, odometry::OdometryCalibration, tracking::TrackingCalibration,
-};
+use kitti_dataset::{object, odometry, tracking};
 
 #[test]
 fn parse_calib() {
-    let _ = ObjectCalibration::from_path("tests/object_calib.txt").unwrap();
-    let _ = TrackingCalibration::from_path("tests/tracking_calib.txt").unwrap();
-    let _ = OdometryCalibration::from_path("tests/odometry_calib.txt").unwrap();
+    let _ = object::Calibration::from_path("tests/object_calib.txt").unwrap();
+    let _ = tracking::Calibration::from_path("tests/tracking_calib.txt").unwrap();
+    let _ = odometry::Calibration::from_path("tests/odometry_calib.txt").unwrap();
 }

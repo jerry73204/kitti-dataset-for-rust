@@ -1,1 +1,1 @@
-pub use crate::calib_codegen::OdometryCalibration;
+pub use crate::calib_codegen::OdometryCalibration as Calibration;

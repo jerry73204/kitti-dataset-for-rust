@@ -1,4 +1,4 @@
-pub mod label;
+mod label;
 
-pub use crate::calib_codegen::ObjectCalibration;
-pub use label::{Annotation, BoundingBox, Extents, Location, Occlusion};
+pub use crate::calib_codegen::ObjectCalibration as Calibration;
+pub use label::{BoundingBox, Extents, Label, Location, Occlusion};

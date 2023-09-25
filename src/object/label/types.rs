@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct SerializedAnnotation {
+struct SerializedLabel {
     pub class: String,
     pub truncation: f64,
     pub occlusion: Occlusion,
@@ -21,9 +21,9 @@ struct SerializedAnnotation {
     pub rotation_y: Angle,
 }
 
-impl From<SerializedAnnotation> for Annotation {
-    fn from(from: SerializedAnnotation) -> Self {
-        let SerializedAnnotation {
+impl From<SerializedLabel> for Label {
+    fn from(from: SerializedLabel) -> Self {
+        let SerializedLabel {
             class,
             truncation,
             occlusion,
@@ -63,9 +63,9 @@ impl From<SerializedAnnotation> for Annotation {
     }
 }
 
-impl From<Annotation> for SerializedAnnotation {
-    fn from(from: Annotation) -> Self {
-        let Annotation {
+impl From<Label> for SerializedLabel {
+    fn from(from: Label) -> Self {
+        let Label {
             class,
             truncation,
             occlusion,
@@ -87,7 +87,7 @@ impl From<Annotation> for SerializedAnnotation {
             rotation_y,
         } = from;
 
-        SerializedAnnotation {
+        SerializedLabel {
             class,
             truncation,
             occlusion,
@@ -108,8 +108,8 @@ impl From<Annotation> for SerializedAnnotation {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(from = "SerializedAnnotation", into = "SerializedAnnotation")]
-pub struct Annotation {
+#[serde(from = "SerializedLabel", into = "SerializedLabel")]
+pub struct Label {
     pub class: String,
     pub truncation: f64,
     pub occlusion: Occlusion,
