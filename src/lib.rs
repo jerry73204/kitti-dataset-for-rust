@@ -37,9 +37,11 @@
 pub mod annotation;
 pub mod calibration;
 pub mod error;
+pub mod oxts;
 pub mod point_cloud;
 
 pub use annotation::{Annotation, BoundingBox, Extents, Location, Occlusion};
 pub use calibration::{CameraCalibration, OdometryCalibration, ProjectionMatrix, Transform2D};
 pub use error::Error;
+pub use oxts::Oxts;
 pub use point_cloud::Point;
