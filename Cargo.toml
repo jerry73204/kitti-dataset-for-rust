@@ -16,6 +16,7 @@ csv = "1.2.2"
 itertools = "0.11.0"
 measurements = { version = "0.11.0", features = ["serde"] }
 nalgebra = { version = "0.32.3", optional = true }
+noisy_float = { version = "0.2.0", features = ["serde"] }
 num-derive = "0.4.0"
 num-traits = "0.2.16"
 serde = { version = "1.0.188", features = ["derive"] }

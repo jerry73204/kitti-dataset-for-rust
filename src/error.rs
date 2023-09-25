@@ -16,6 +16,9 @@ pub enum Error {
 
     #[error("invalid class name \"{0}\"")]
     InvalidClassName(String),
+
+    #[error("invalid truncation value \"{0}\"")]
+    InvalidTruncationValue(f64),
 }
 
 impl From<fmt::Error> for Error {

@@ -1,5 +1,9 @@
-use crate::serde::{occlusion, truncation};
+use crate::{
+    serde::{object_truncation, occlusion},
+    Error,
+};
 use measurements::{Angle, Length};
+use noisy_float::prelude::*;
 use num_derive::FromPrimitive;
 use serde::{Deserialize, Serialize};
 
@@ -7,7 +11,7 @@ use serde::{Deserialize, Serialize};
 #[serde(from = "SerializedLabel", into = "SerializedLabel")]
 pub struct Label {
     pub class: Class,
-    pub truncation: Option<f64>,
+    pub truncation: Option<Truncation>,
     pub occlusion: Option<Occlusion>,
     pub alpha: Angle,
     pub bbox: BoundingBox,
@@ -19,8 +23,8 @@ pub struct Label {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct SerializedLabel {
     pub class: Class,
-    #[serde(with = "truncation")]
-    pub truncation: Option<f64>,
+    #[serde(with = "object_truncation")]
+    pub truncation: Option<Truncation>,
     #[serde(with = "occlusion")]
     pub occlusion: Option<Occlusion>,
     pub alpha: f64,
@@ -157,6 +161,50 @@ pub struct Location {
     pub x: Length,
     pub y: Length,
     pub z: Length,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[repr(transparent)]
+pub struct Truncation(R64);
+
+impl Truncation {
+    pub fn as_f64(&self) -> f64 {
+        self.0.raw()
+    }
+
+    pub fn as_f32(&self) -> f32 {
+        self.as_f64() as f32
+    }
+
+    pub fn from_f64(value: f64) -> Result<Self, Error> {
+        value.try_into()
+    }
+
+    pub fn from_f32(value: f32) -> Result<Self, Error> {
+        (value as f64).try_into()
+    }
+}
+
+impl TryFrom<f64> for Truncation {
+    type Error = Error;
+
+    fn try_from(fval: f64) -> Result<Self, Self::Error> {
+        let error = || Error::InvalidTruncationValue(fval);
+
+        let rval = R64::try_from(fval).map_err(|_| error())?;
+
+        if !(r64(0.0)..=r64(1.0)).contains(&rval) {
+            return Err(error());
+        }
+
+        Ok(Truncation(rval))
+    }
+}
+
+impl From<Truncation> for f64 {
+    fn from(value: Truncation) -> Self {
+        value.0.raw()
+    }
 }
 
 #[derive(

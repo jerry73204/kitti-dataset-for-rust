@@ -1,4 +1,9 @@
+use crate::{
+    serde::{occlusion, tracking_truncation},
+    Error,
+};
 use measurements::{Angle, Length};
+use noisy_float::prelude::*;
 use serde::{Deserialize, Serialize};
 use std::{
     borrow::Borrow,
@@ -8,10 +13,6 @@ use std::{
 };
 
 pub use crate::object::{BoundingBox, Class, Extents, Location, Occlusion};
-use crate::{
-    serde::{occlusion, truncation},
-    Error,
-};
 
 pub type LabelFromReaderIter<R> = csv::DeserializeRecordsIntoIter<R, Label>;
 pub type LabelFromPathIter = LabelFromReaderIter<BufReader<File>>;
@@ -23,7 +24,7 @@ pub struct Label {
     pub frame: u32,
     pub track_id: Option<u32>,
     pub class: Class,
-    pub truncation: Option<f64>,
+    pub truncation: Option<Truncation>,
     pub occlusion: Option<Occlusion>,
     pub alpha: Angle,
     pub bbox: BoundingBox,
@@ -37,8 +38,8 @@ struct SerializedLabel {
     pub frame: u32,
     pub track_id: i32,
     pub class: Class,
-    #[serde(with = "truncation")]
-    pub truncation: Option<f64>,
+    #[serde(with = "tracking_truncation")]
+    pub truncation: Option<Truncation>,
     #[serde(with = "occlusion")]
     pub occlusion: Option<Occlusion>,
     pub alpha: f64,
@@ -248,5 +249,48 @@ impl Label {
         let mut buf = vec![];
         Self::write_to_writer(&mut buf, labels)?;
         Ok(String::from_utf8(buf).unwrap())
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum Truncation {
+    Ignored,
+    Labeled(R64),
+}
+
+impl Truncation {
+    pub fn as_f64(&self) -> Option<f64> {
+        match self {
+            Truncation::Ignored => None,
+            Truncation::Labeled(value) => Some(value.raw()),
+        }
+    }
+
+    pub fn as_f32(&self) -> Option<f32> {
+        Some(self.as_f64()? as f32)
+    }
+
+    pub fn from_f64(value: f64) -> Result<Self, Error> {
+        value.try_into()
+    }
+
+    pub fn from_f32(value: f32) -> Result<Self, Error> {
+        (value as f64).try_into()
+    }
+}
+
+impl TryFrom<f64> for Truncation {
+    type Error = Error;
+
+    fn try_from(fval: f64) -> Result<Self, Self::Error> {
+        let error = || Error::InvalidTruncationValue(fval);
+
+        let rval = R64::try_from(fval).map_err(|_| error())?;
+
+        if !(r64(0.0)..=r64(1.0)).contains(&rval) {
+            return Err(error());
+        }
+
+        Ok(Truncation::Labeled(rval))
     }
 }

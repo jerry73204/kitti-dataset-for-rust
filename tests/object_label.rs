@@ -7,7 +7,7 @@ fn parse_object_label() {
     let expect = vec![
         Label {
             class: Class::Car,
-            truncation: Some(0.0),
+            truncation: Some(0.0.try_into().unwrap()),
             occlusion: Some(Occlusion::FullyVisible),
             alpha: Angle::from_radians(-1.58),
             bbox: BoundingBox {
@@ -30,7 +30,7 @@ fn parse_object_label() {
         },
         Label {
             class: Class::Cyclist,
-            truncation: Some(0.0),
+            truncation: Some(0.0.try_into().unwrap()),
             occlusion: Some(Occlusion::FullyVisible),
             alpha: Angle::from_radians(-2.46),
             bbox: BoundingBox {
@@ -53,7 +53,7 @@ fn parse_object_label() {
         },
         Label {
             class: Class::Pedestrian,
-            truncation: Some(0.0),
+            truncation: Some(0.0.try_into().unwrap()),
             occlusion: Some(Occlusion::LargelyOccluded),
             alpha: Angle::from_radians(0.21),
             bbox: BoundingBox {
