@@ -42,5 +42,6 @@ pub mod odometry;
 pub mod point_cloud;
 pub mod tracking;
 
+pub use common::{ProjectionMatrix, Transform2D};
 pub use error::Error;
 pub use point_cloud::Point;
