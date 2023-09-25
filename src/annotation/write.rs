@@ -1,4 +1,4 @@
-use crate::Annotation;
+use super::Annotation;
 use std::{
     borrow::Borrow,
     fs::File,
@@ -6,7 +6,7 @@ use std::{
     path::Path,
 };
 
-pub fn writer_to_writer<W, I, A>(writer: W, annotations: I) -> Result<(), io::Error>
+pub fn write_to_writer<W, I, A>(writer: W, annotations: I) -> io::Result<()>
 where
     I: IntoIterator<Item = A>,
     W: Write,
@@ -26,22 +26,22 @@ where
     Ok(())
 }
 
-pub fn write_to_path<P, I, A>(path: P, annotations: I) -> Result<(), io::Error>
+pub fn write_to_path<P, I, A>(path: P, annotations: I) -> io::Result<()>
 where
     I: IntoIterator<Item = A>,
     P: AsRef<Path>,
     A: Borrow<Annotation>,
 {
     let writer = BufWriter::new(File::create(path)?);
-    writer_to_writer(writer, annotations)
+    write_to_writer(writer, annotations)
 }
 
-pub fn write_to_string<I, A>(annotations: I) -> Result<String, io::Error>
+pub fn write_to_string<I, A>(annotations: I) -> io::Result<String>
 where
     I: IntoIterator<Item = A>,
     A: Borrow<Annotation>,
 {
     let mut buf = vec![];
-    writer_to_writer(&mut buf, annotations)?;
+    write_to_writer(&mut buf, annotations)?;
     Ok(String::from_utf8(buf).unwrap())
 }

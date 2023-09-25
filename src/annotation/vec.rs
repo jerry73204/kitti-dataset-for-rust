@@ -1,4 +1,5 @@
-use crate::{annotation::Annotation, error::Error};
+use super::Annotation;
+use crate::error::Error;
 use std::{
     fs::File,
     io::{BufReader, Cursor, Read},

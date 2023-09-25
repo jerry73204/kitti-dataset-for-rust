@@ -21,7 +21,7 @@ where
     reader.into_deserialize()
 }
 
-pub fn iter_from_path<P>(path: P) -> Result<AnnotationFromPathIter, io::Error>
+pub fn iter_from_path<P>(path: P) -> io::Result<AnnotationFromPathIter>
 where
     P: AsRef<Path>,
 {
