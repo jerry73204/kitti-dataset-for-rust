@@ -4,7 +4,7 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct SerializedLabel {
-    pub class: String,
+    pub class: Class,
     pub truncation: f64,
     pub occlusion: Occlusion,
     pub alpha: f64,
@@ -12,13 +12,13 @@ struct SerializedLabel {
     pub ymin: f64,
     pub xmax: f64,
     pub ymax: f64,
-    pub height: Length,
-    pub width: Length,
-    pub length: Length,
-    pub x: Length,
-    pub y: Length,
-    pub z: Length,
-    pub rotation_y: Angle,
+    pub height: f64,
+    pub width: f64,
+    pub length: f64,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+    pub rotation_y: f64,
 }
 
 impl From<SerializedLabel> for Label {
@@ -45,7 +45,7 @@ impl From<SerializedLabel> for Label {
             class,
             truncation,
             occlusion,
-            alpha,
+            alpha: Angle::from_radians(alpha),
             bbox: BoundingBox {
                 xmin,
                 ymin,
@@ -53,12 +53,16 @@ impl From<SerializedLabel> for Label {
                 ymax,
             },
             extents: Extents {
-                height,
-                width,
-                length,
+                height: Length::from_meters(height),
+                width: Length::from_meters(width),
+                length: Length::from_meters(length),
             },
-            location: Location { x, y, z },
-            rotation_y,
+            location: Location {
+                x: Length::from_meters(x),
+                y: Length::from_meters(y),
+                z: Length::from_meters(z),
+            },
+            rotation_y: Angle::from_radians(rotation_y),
         }
     }
 }
@@ -91,18 +95,18 @@ impl From<Label> for SerializedLabel {
             class,
             truncation,
             occlusion,
-            alpha,
+            alpha: alpha.as_radians(),
             xmin,
             ymin,
             xmax,
             ymax,
-            height,
-            width,
-            length,
-            x,
-            y,
-            z,
-            rotation_y,
+            height: height.as_meters(),
+            width: width.as_meters(),
+            length: length.as_meters(),
+            x: x.as_meters(),
+            y: y.as_meters(),
+            z: z.as_meters(),
+            rotation_y: rotation_y.as_radians(),
         }
     }
 }
@@ -110,10 +114,10 @@ impl From<Label> for SerializedLabel {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(from = "SerializedLabel", into = "SerializedLabel")]
 pub struct Label {
-    pub class: String,
+    pub class: Class,
     pub truncation: f64,
     pub occlusion: Occlusion,
-    pub alpha: f64,
+    pub alpha: Angle,
     pub bbox: BoundingBox,
     pub extents: Extents,
     pub location: Location,
@@ -150,4 +154,30 @@ pub struct Location {
     pub x: Length,
     pub y: Length,
     pub z: Length,
+}
+
+#[derive(
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    Hash,
+    Serialize,
+    Deserialize,
+    strum::Display,
+    strum::EnumString,
+)]
+pub enum Class {
+    Car,
+    Van,
+    Truck,
+    Pedestrian,
+    #[serde(rename = "Person_sitting")]
+    #[strum(serialize = "Person_sitting")]
+    PersonSitting,
+    Cyclist,
+    Tram,
+    Misc,
+    DontCare,
 }

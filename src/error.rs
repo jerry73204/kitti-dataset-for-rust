@@ -13,6 +13,9 @@ pub enum Error {
 
     #[error("invalid calib configuration: {0}")]
     InvalidCalibConfig(String),
+
+    #[error("invalid class name \"{0}\"")]
+    InvalidClassName(String),
 }
 
 impl From<fmt::Error> for Error {

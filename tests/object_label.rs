@@ -1,15 +1,15 @@
-use kitti_dataset::object::{BoundingBox, Extents, Label, Location, Occlusion};
+use kitti_dataset::object::{BoundingBox, Class, Extents, Label, Location, Occlusion};
 use measurements::{Angle, Length};
 
 #[test]
-fn parse_annotation() {
-    let anns1: Vec<Label> = Label::vec_from_path("tests/object_label.txt").unwrap();
+fn parse_object_label() {
+    let label1: Vec<Label> = Label::vec_from_path("tests/object_label.txt").unwrap();
     let expect = vec![
         Label {
-            class: "car".into(),
+            class: Class::Car,
             truncation: 0.0,
             occlusion: Occlusion::FullyVisible,
-            alpha: -1.58,
+            alpha: Angle::from_radians(-1.58),
             bbox: BoundingBox {
                 xmin: 587.01,
                 ymin: 173.33,
@@ -29,10 +29,10 @@ fn parse_annotation() {
             rotation_y: Angle::from_radians(-1.59),
         },
         Label {
-            class: "cyclist".into(),
+            class: Class::Cyclist,
             truncation: 0.0,
             occlusion: Occlusion::FullyVisible,
-            alpha: -2.46,
+            alpha: Angle::from_radians(-2.46),
             bbox: BoundingBox {
                 xmin: 665.45,
                 ymin: 160.00,
@@ -52,10 +52,10 @@ fn parse_annotation() {
             rotation_y: Angle::from_radians(-2.35),
         },
         Label {
-            class: "pedestrian".into(),
+            class: Class::Pedestrian,
             truncation: 0.0,
-            occlusion: kitti_dataset::object::Occlusion::LargelyOccluded,
-            alpha: 0.21,
+            occlusion: Occlusion::LargelyOccluded,
+            alpha: Angle::from_radians(0.21),
             bbox: BoundingBox {
                 xmin: 423.17,
                 ymin: 173.67,
@@ -75,9 +75,9 @@ fn parse_annotation() {
             rotation_y: Angle::from_radians(-0.03),
         },
     ];
-    assert_eq!(anns1, expect);
+    assert_eq!(label1, expect);
 
-    let text = Label::write_to_string(&anns1).unwrap();
-    let anns2 = Label::vec_from_str(&text).unwrap();
-    assert_eq!(anns1, anns2);
+    let text = Label::write_to_string(&label1).unwrap();
+    let label2 = Label::vec_from_str(&text).unwrap();
+    assert_eq!(label1, label2);
 }
