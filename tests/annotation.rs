@@ -1,10 +1,10 @@
-use kitti_dataset::{Annotation, BoundingBox, Extents, Location, Occlusion};
+use kitti_dataset::object::{Annotation, BoundingBox, Extents, Location, Occlusion};
 use measurements::{Angle, Length};
 
 #[test]
 fn parse_annotation() {
     let anns1: Vec<Annotation> =
-        kitti_dataset::annotation::vec_from_path("tests/annotation.txt").unwrap();
+        kitti_dataset::object::label::vec_from_path("tests/annotation.txt").unwrap();
     let expect = vec![
         Annotation {
             class: "car".into(),
@@ -55,7 +55,7 @@ fn parse_annotation() {
         Annotation {
             class: "pedestrian".into(),
             truncation: 0.0,
-            occlusion: kitti_dataset::Occlusion::LargelyOccluded,
+            occlusion: kitti_dataset::object::Occlusion::LargelyOccluded,
             alpha: 0.21,
             bbox: BoundingBox {
                 xmin: 423.17,
@@ -78,7 +78,7 @@ fn parse_annotation() {
     ];
     assert_eq!(anns1, expect);
 
-    let text = kitti_dataset::annotation::write_to_string(&anns1).unwrap();
-    let anns2 = kitti_dataset::annotation::vec_from_str(&text).unwrap();
+    let text = kitti_dataset::object::label::write_to_string(&anns1).unwrap();
+    let anns2 = kitti_dataset::object::label::vec_from_str(&text).unwrap();
     assert_eq!(anns1, anns2);
 }

@@ -1,4 +1,4 @@
-use kitti_dataset::oxts;
+use kitti_dataset::tracking::oxts;
 
 #[test]
 fn parse_oxts() {

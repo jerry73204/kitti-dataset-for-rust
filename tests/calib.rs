@@ -1,7 +1,10 @@
-use kitti_dataset::{CameraCalibration, OdometryCalibration};
+use kitti_dataset::{
+    object::ObjectCalibration, odometry::OdometryCalibration, tracking::TrackingCalibration,
+};
 
 #[test]
 fn parse_calib() {
-    let _ = CameraCalibration::from_path("tests/camera_calib.txt").unwrap();
+    let _ = ObjectCalibration::from_path("tests/object_calib.txt").unwrap();
+    let _ = TrackingCalibration::from_path("tests/tracking_calib.txt").unwrap();
     let _ = OdometryCalibration::from_path("tests/odometry_calib.txt").unwrap();
 }

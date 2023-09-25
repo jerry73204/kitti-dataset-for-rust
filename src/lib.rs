@@ -34,14 +34,13 @@
 //!
 //! - [Point] - 3D Object Detection Evaluation 2017 Velodyne point clouds
 
-pub mod annotation;
-pub mod calibration;
+pub(crate) mod calib_codegen;
+pub mod common;
 pub mod error;
-pub mod oxts;
+pub mod object;
+pub mod odometry;
 pub mod point_cloud;
+pub mod tracking;
 
-pub use annotation::{Annotation, BoundingBox, Extents, Location, Occlusion};
-pub use calibration::{CameraCalibration, OdometryCalibration, ProjectionMatrix, Transform2D};
 pub use error::Error;
-pub use oxts::Oxts;
 pub use point_cloud::Point;

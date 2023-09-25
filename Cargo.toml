@@ -22,4 +22,4 @@ slice-of-array = "0.3.2"
 thiserror = "1.0.48"
 
 [dev-dependencies]
-anyhow = "1.0.75"
+anyhow = { version = "1.0.75", features = ["backtrace"] }
