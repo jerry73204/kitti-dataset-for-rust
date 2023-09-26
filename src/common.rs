@@ -1,3 +1,7 @@
+mod point_cloud;
+
+pub use point_cloud::*;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct ProjectionMatrix(pub [[f32; 4]; 3]);
 
@@ -11,12 +15,14 @@ mod with_nalgebra {
     use slice_of_array::prelude::*;
 
     impl ProjectionMatrix {
+        /// Convert to nalgebra [Matrix3x4].
         pub fn to_na_matrix(&self) -> Matrix3x4<f32> {
             Matrix3x4::from_row_slice(self.0.flat())
         }
     }
 
     impl Transform2D {
+        /// Convert to nalgebra [Matrix3].
         pub fn to_na_matrix(&self) -> Matrix3<f32> {
             Matrix3::from_row_slice(self.0.flat())
         }
