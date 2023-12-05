@@ -226,7 +226,11 @@ where
     I: Iterator<Item = Result<CalibLine, Error>>,
 {
     let Some(line) = lines.next() else {
-        return Err(io::Error::new(io::ErrorKind::UnexpectedEof, "unexpected end of file in calib config").into());
+        return Err(io::Error::new(
+            io::ErrorKind::UnexpectedEof,
+            "unexpected end of file in calib config",
+        )
+        .into());
     };
 
     let line = line?;
@@ -254,8 +258,8 @@ fn reader_to_lines<R: Read>(reader: R) -> impl Iterator<Item = Result<CalibLine,
             let mut tokens = line.split_ascii_whitespace();
 
             let Some(name) = tokens.next() else {
-            bail!("unexpected empty line");
-        };
+                bail!("unexpected empty line");
+            };
             let values: Vec<f32> = tokens
                 .map(|token| {
                     token
