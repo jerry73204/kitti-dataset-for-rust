@@ -20,7 +20,6 @@ num-derive = "0.4.0"
 num-traits = "0.2.16"
 serde = { version = "1.0.188", features = ["derive"] }
 slice-of-array = "0.3.2"
-strum = { version = "0.25.0", features = ["derive"] }
 thiserror = "1.0.48"
 
 [dev-dependencies]

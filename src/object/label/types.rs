@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(from = "SerializedLabel", into = "SerializedLabel")]
 pub struct Label {
-    pub class: Class,
+    pub class: String,
     pub truncation: Option<Truncation>,
     pub occlusion: Option<Occlusion>,
     pub alpha: Angle,
@@ -22,7 +22,7 @@ pub struct Label {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct SerializedLabel {
-    pub class: Class,
+    pub class: String,
     #[serde(with = "object_truncation")]
     pub truncation: Option<Truncation>,
     #[serde(with = "occlusion")]
@@ -205,31 +205,4 @@ impl From<Truncation> for f64 {
     fn from(value: Truncation) -> Self {
         value.0.raw()
     }
-}
-
-#[derive(
-    Debug,
-    Clone,
-    Copy,
-    PartialEq,
-    Eq,
-    Hash,
-    Serialize,
-    Deserialize,
-    strum::Display,
-    strum::EnumString,
-)]
-pub enum Class {
-    Car,
-    Van,
-    Truck,
-    Pedestrian,
-    #[serde(rename = "Person_sitting")]
-    #[strum(serialize = "Person_sitting")]
-    PersonSitting,
-    Cyclist,
-    Tram,
-    Bus,
-    Misc,
-    DontCare,
 }

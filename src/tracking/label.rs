@@ -12,7 +12,7 @@ use std::{
     path::Path,
 };
 
-pub use crate::object::{BoundingBox, Class, Extents, Location, Occlusion};
+pub use crate::object::{BoundingBox, Extents, Location, Occlusion};
 
 pub type LabelFromReaderIter<R> = csv::DeserializeRecordsIntoIter<R, Label>;
 pub type LabelFromPathIter = LabelFromReaderIter<BufReader<File>>;
@@ -23,7 +23,7 @@ pub type LabelFromStrIter<'a> = LabelFromReaderIter<Cursor<&'a str>>;
 pub struct Label {
     pub frame: u32,
     pub track_id: Option<u32>,
-    pub class: Class,
+    pub class: String,
     pub truncation: Option<Truncation>,
     pub occlusion: Option<Occlusion>,
     pub alpha: Angle,
@@ -37,7 +37,7 @@ pub struct Label {
 struct SerializedLabel {
     pub frame: u32,
     pub track_id: i32,
-    pub class: Class,
+    pub class: String,
     #[serde(with = "tracking_truncation")]
     pub truncation: Option<Truncation>,
     #[serde(with = "occlusion")]
