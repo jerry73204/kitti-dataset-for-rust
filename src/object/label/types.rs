@@ -229,6 +229,7 @@ pub enum Class {
     PersonSitting,
     Cyclist,
     Tram,
+    Bus,
     Misc,
     DontCare,
 }
