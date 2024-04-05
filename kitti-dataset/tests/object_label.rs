@@ -1,4 +1,4 @@
-use kitti_dataset::object::{BoundingBox, Class, Extents, Label, Location, Occlusion};
+use kitti_dataset::object::{BoundingBox, Extents, Label, Location, Occlusion};
 use measurements::{Angle, Length};
 
 #[test]
@@ -6,7 +6,7 @@ fn parse_object_label() {
     let label1: Vec<Label> = Label::vec_from_path("tests/object_label.txt").unwrap();
     let expect = vec![
         Label {
-            class: Class::Car,
+            class: "Car".to_string(),
             truncation: Some(0.0.try_into().unwrap()),
             occlusion: Some(Occlusion::FullyVisible),
             alpha: Angle::from_radians(-1.58),
@@ -29,7 +29,7 @@ fn parse_object_label() {
             rotation_y: Angle::from_radians(-1.59),
         },
         Label {
-            class: Class::Cyclist,
+            class: "Cyclist".to_string(),
             truncation: Some(0.0.try_into().unwrap()),
             occlusion: Some(Occlusion::FullyVisible),
             alpha: Angle::from_radians(-2.46),
@@ -52,7 +52,7 @@ fn parse_object_label() {
             rotation_y: Angle::from_radians(-2.35),
         },
         Label {
-            class: Class::Pedestrian,
+            class: "Pedestrian".to_string(),
             truncation: Some(0.0.try_into().unwrap()),
             occlusion: Some(Occlusion::LargelyOccluded),
             alpha: Angle::from_radians(0.21),
