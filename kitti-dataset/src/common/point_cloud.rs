@@ -96,15 +96,3 @@ impl Point {
         [x, y, z, reflection]
     }
 }
-
-#[cfg(feature = "nalgebra")]
-mod with_nalgebra {
-    use nalgebra::Point3;
-
-    impl super::Point {
-        pub fn to_na_xyz_point(&self) -> Point3<f32> {
-            let Self { x, y, z, .. } = *self;
-            Point3::new(x, y, z)
-        }
-    }
-}
