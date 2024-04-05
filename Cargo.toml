@@ -1,26 +1,5 @@
-[package]
-name = "kitti-dataset"
-description = 'Data types and ser/deserialization for KITTI dataset'
-version = "0.2.0"
-authors = ['jerry73204 <jerry73204@gmail.com>']
-edition = "2021"
-documentation = 'https://docs.rs/kitti-dataset/'
-repository = 'https://github.com/jerry73204/kitti-dataset-for-rust.git'
-homepage = 'https://github.com/jerry73204/kitti-dataset-for-rust'
-readme = 'README.md'
-license = 'MIT'
-
-[dependencies]
-csv = "1.2.2"
-itertools = "0.11.0"
-measurements = { version = "0.11.0", features = ["serde"] }
-nalgebra = { version = "0.32.3", optional = true }
-noisy_float = { version = "0.2.0", features = ["serde"] }
-num-derive = "0.4.0"
-num-traits = "0.2.16"
-serde = { version = "1.0.188", features = ["derive"] }
-slice-of-array = "0.3.2"
-thiserror = "1.0.48"
-
-[dev-dependencies]
-anyhow = { version = "1.0.75", features = ["backtrace"] }
+[workspace]
+resolver = "2"
+members = [
+    "kitti-dataset",
+]
