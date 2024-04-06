@@ -19,6 +19,9 @@ pub enum Error {
 
     #[error("invalid truncation value \"{0}\"")]
     InvalidTruncationValue(f64),
+
+    #[error("image error: {0}")]
+    ImageError(image::error::ImageError),
 }
 
 impl From<fmt::Error> for Error {
@@ -36,5 +39,11 @@ impl From<csv::Error> for Error {
 impl From<io::Error> for Error {
     fn from(v: io::Error) -> Self {
         Self::Io(v)
+    }
+}
+
+impl From<image::error::ImageError> for Error {
+    fn from(v: image::error::ImageError) -> Self {
+        Self::ImageError(v)
     }
 }

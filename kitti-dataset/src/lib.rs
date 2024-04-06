@@ -74,6 +74,7 @@
 
 pub(crate) mod calib_codegen;
 pub mod common;
+pub mod dataset;
 pub mod error;
 pub mod object;
 pub mod odometry;

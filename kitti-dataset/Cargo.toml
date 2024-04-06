@@ -12,6 +12,7 @@ license = 'MIT'
 
 [dependencies]
 csv = "1.2.2"
+image = "0.25.1"
 itertools = "0.11.0"
 measurements = { version = "0.11.0", features = ["serde"] }
 noisy_float = { version = "0.2.0", features = ["serde"] }
@@ -22,4 +23,7 @@ slice-of-array = "0.3.2"
 thiserror = "1.0.48"
 
 [dev-dependencies]
+clap = { version = "4.5.4", features = ["derive"] }
 anyhow = { version = "1.0.75", features = ["backtrace"] }
+rayon = "1.10.0"
+indicatif = "0.17.8"
