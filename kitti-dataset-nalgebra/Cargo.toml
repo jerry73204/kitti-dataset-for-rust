@@ -1,7 +1,7 @@
 [package]
 name = "kitti-dataset-nalgebra"
 description = 'nalgebra extension for kitti-dataset crate'
-version = "0.1.0"
+version = "0.3.0"
 authors = ['jerry73204 <jerry73204@gmail.com>']
 edition = "2021"
 documentation = 'https://docs.rs/kitti-dataset-nalgebra/'
@@ -14,6 +14,6 @@ license = 'MIT'
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-kitti-dataset = { version = "0.2.0", path = "../kitti-dataset" }
+kitti-dataset = { version = "0.3.0", path = "../kitti-dataset" }
 nalgebra = "0.32.5"
 slice-of-array = "0.3.2"

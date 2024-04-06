@@ -1,7 +1,7 @@
 [package]
 name = "kitti-dataset"
 description = 'Dataset loader, data parsers and writers for KITTI dataset.'
-version = "0.2.0"
+version = "0.3.0"
 authors = ['jerry73204 <jerry73204@gmail.com>']
 edition = "2021"
 documentation = 'https://docs.rs/kitti-dataset/'
