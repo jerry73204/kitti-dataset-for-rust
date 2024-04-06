@@ -1,5 +1,62 @@
-//! Parsers and writers for KITTI dataset.
+//! Dataset loader, data parsers and writers for KITTI dataset.
 //!
+//! ## Dataset Loader
+//!
+//! The dataset loader allows you to iterate through all kinds of data
+//! samples. Currently, [ObjectDataset](dataset::ObjectDataset) and
+//! [TrackingDataset](dataset::TrackingDataset) are supported.
+//!
+//! The dataset layout for _Object Detection Evaluation 2012_ dataset
+//! is presented below for example. You can download appropriate zip
+//! files on the [official
+//! site](https://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=2d)
+//! and extract them together to get the layout.
+//!
+//! ```ignore
+//! object/training
+//! ├── calib
+//! ├── image_2
+//! ├── image_3
+//! ├── label_2
+//! └── velodyne
+//! ```
+//!
+//! The usage of dataset API is demonstrated in the code.
+//!
+//! ```no_run
+//! use kitti_dataset::dataset::{object::SampleData, ObjectDataset};
+//!
+//! # fn main() -> anyhow::Result<()> {
+//! let dataset = ObjectDataset::open("/path/to/kitti_dir/object/training")?;
+//!
+//! // To get a specific frame
+//! let frame = dataset.frame(0).unwrap();
+//!
+//! // Iterate through all frames
+//! for frame in dataset.frame_iter() {
+//!     // Obtain a specific sample
+//!     let sample = frame.key("image_2").unwrap();
+//!     let SampleData::Image(image) = sample.data()? else {
+//!         unreachable!();
+//!     };
+//!
+//!     // Iterate through all samples
+//!     for sample in frame.sample_iter() {
+//!         let data = sample.data()?;
+//!     }
+//! }
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! ## Data Types
+//!
+//! The section is a comprehensive list of available data types used
+//! in the KITTI dataset. Each type has one or more associated data
+//! loaders. For example,
+//! [Label::vec_from_path()](object::Label::vec_from_path) reads a
+//! list of labels in one .txt file. Please click into the type pages
+//! to discover available methods.
 //!
 //! ### Common
 //!
