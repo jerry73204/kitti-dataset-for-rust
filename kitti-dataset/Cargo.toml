@@ -1,6 +1,6 @@
 [package]
 name = "kitti-dataset"
-description = 'Data types and ser/deserialization for KITTI dataset'
+description = 'Dataset loader, data parsers and writers for KITTI dataset.'
 version = "0.2.0"
 authors = ['jerry73204 <jerry73204@gmail.com>']
 edition = "2021"
